@@ -1,0 +1,85 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helpers ---
+    function isSignedIn() { return request.auth != null; }
+    function isEmailVerified() { return isSignedIn() && request.auth.token.email_verified == true; }
+    function isOwner(userId) { return isSignedIn() && request.auth.uid == userId; }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+
+    // --- User Validation ---
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'email', 'role', 'createdAt']) &&
+             data.uid == request.auth.uid &&
+             data.email is string && data.email.size() <= 256 &&
+             data.role in ['student', 'tutor'] &&
+             data.createdAt == request.time;
+    }
+
+    match /users/{userId} {
+      allow get: if isSignedIn();
+      allow list: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow create: if isOwner(userId) && isValidUser(incoming());
+      allow update: if isOwner(userId) && 
+                      incoming().uid == existing().uid &&
+                      incoming().role == existing().role &&
+                      incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'photoURL', 'enrolledCourses', 'savedNotes']);
+    }
+
+    // --- Course Validation ---
+    function isValidCourse(data) {
+      return data.keys().hasAll(['title', 'subjectId', 'board', 'level', 'price']) &&
+             data.title is string && data.title.size() <= 200 &&
+             data.board in ['Cambridge', 'Edexcel', 'FBISE'] &&
+             data.level in ['O Level', 'A Level', 'FSc'] &&
+             data.price is number;
+    }
+
+    match /courses/{courseId} {
+      allow read: if true;
+      allow create, update: if isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)) && isValidCourse(incoming());
+    }
+
+    // --- Note Validation ---
+    function isValidNote(data) {
+      return data.keys().hasAll(['title', 'subjectId', 'type']) &&
+             data.title is string && data.title.size() <= 200 &&
+             data.type in ['note', 'past-paper', 'quiz'];
+    }
+
+    match /notes/{noteId} {
+      allow read: if true;
+      allow create: if isSignedIn() && isValidNote(incoming());
+      allow update: if isSignedIn() && (isOwner(existing().authorId) || exists(/databases/$(database)/documents/admins/$(request.auth.uid))) && isValidNote(incoming());
+    }
+
+    // --- Booking Validation ---
+    function isValidBooking(data) {
+      return data.keys().hasAll(['studentId', 'tutorId', 'date', 'status']) &&
+             data.studentId == request.auth.uid &&
+             data.status in ['pending', 'confirmed', 'cancelled', 'completed'] &&
+             data.date is string;
+    }
+
+    match /bookings/{bookingId} {
+      allow read: if isSignedIn() && (isOwner(resource.data.studentId) || isOwner(resource.data.tutorId));
+      allow create: if isSignedIn() && isValidBooking(incoming());
+      allow update: if isSignedIn() && (isOwner(resource.data.studentId) || isOwner(resource.data.tutorId)) &&
+                      incoming().diff(existing()).affectedKeys().hasOnly(['status', 'notes']);
+    }
+    
+    // --- Tutors ---
+    match /tutors/{tutorId} {
+      allow read: if true;
+      allow write: if isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User account information and progress tracking",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["student", "tutor", "admin"] },
+        "photoURL": { "type": "string" },
+        "enrolledCourses": { "type": "array", "items": { "type": "string" } },
+        "savedNotes": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Course": {
+      "title": "Course",
+      "description": "Tutoring course details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "board": { "type": "string", "enum": ["Cambridge", "Edexcel", "FBISE"] },
+        "level": { "type": "string", "enum": ["O Level", "A Level", "FSc"] },
+        "price": { "type": "number" },
+        "duration": { "type": "string" },
+        "tutorId": { "type": "string" },
+        "thumbnail": { "type": "string" }
+      },
+      "required": ["title", "subjectId", "board", "level", "price"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "Session booking between student and tutor",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentId": { "type": "string" },
+        "tutorId": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["pending", "confirmed", "cancelled", "completed"] },
+        "notes": { "type": "string" }
+      },
+      "required": ["studentId", "tutorId", "date", "status"]
+    },
+    "Note": {
+      "title": "Study Resource",
+      "description": "Notes, past papers, and quizzes",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "topic": { "type": "string" },
+        "type": { "type": "string", "enum": ["note", "past-paper", "quiz"] },
+        "content": { "type": "string" },
+        "fileUrl": { "type": "string" },
+        "authorId": { "type": "string" }
+      },
+      "required": ["title", "subjectId", "type"]
+    },
+    "Tutor": {
+      "title": "Tutor Profile",
+      "description": "Public profile for instructors",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "bio": { "type": "string" },
+        "qualifications": { "type": "array", "items": { "type": "string" } },
+        "experience": { "type": "string" },
+        "rating": { "type": "number" },
+        "subjects": { "type": "array", "items": { "type": "string" } },
+        "image": { "type": "string" }
+      },
+      "required": ["id", "name", "subjects"]
+    }
+  },
+  "firestore": {
+    "users": {
+      "schema": "User",
+      "description": "Collection of user profiles"
+    },
+    "courses": {
+      "schema": "Course",
+      "description": "Collection of available courses"
+    },
+    "bookings": {
+      "schema": "Booking",
+      "description": "Collection of session bookings"
+    },
+    "notes": {
+      "schema": "Note",
+      "description": "Collection of study resources"
+    },
+    "tutors": {
+      "schema": "Tutor",
+      "description": "Collection of tutor profiles"
+    }
+  }
+}

@@ -27,10 +27,10 @@ export default function Navbar() {
   }, [isDark]);
 
   const navLinks = [
-    { name: 'Home', path: '/' },
     { name: 'Subjects', path: '/subjects' },
-    { name: 'Courses', path: '/courses' },
     { name: 'Notes', path: '/notes' },
+    { name: 'Blog', path: '/blog' },
+    { name: 'Pricing', path: '/pricing' },
     { name: 'Tutors', path: '/tutors' },
   ];
 
@@ -38,17 +38,17 @@ export default function Navbar() {
     <nav className={cn(
       "fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-16 flex items-center",
       scrolled || location.pathname !== '/'
-        ? "bg-white/80 dark:bg-slate-950/80 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800"
+        ? "bg-white/80 dark:bg-brand-primary/80 backdrop-blur-lg border-b border-slate-200 dark:border-brand-purple/20"
         : "bg-transparent"
     )}>
       <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-10">
             <Link to="/" className="flex items-center space-x-2 group">
-              <div className="w-8 h-8 bg-linear-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold transform group-hover:rotate-6 transition-transform">
+              <div className="w-8 h-8 bg-linear-to-br from-brand-primary to-brand-accent rounded-lg flex items-center justify-center text-white dark:text-brand-primary font-bold transform group-hover:rotate-6 transition-transform">
                 E
               </div>
-              <span className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">
+              <span className="text-xl font-black text-slate-900 dark:text-white tracking-tight uppercase">
                 AceExams
               </span>
             </Link>
@@ -59,10 +59,10 @@ export default function Navbar() {
                   key={link.name}
                   to={link.path}
                   className={cn(
-                    "text-sm font-bold transition-all duration-200",
+                    "text-xs uppercase tracking-widest font-black transition-all duration-200",
                     location.pathname === link.path 
-                      ? "text-blue-600" 
-                      : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
+                      ? "text-brand-primary dark:text-brand-accent" 
+                      : "text-slate-400 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent"
                   )}
                 >
                   {link.name}
@@ -77,27 +77,27 @@ export default function Navbar() {
               <input 
                 type="text" 
                 placeholder="Search notes, topics..." 
-                className="w-48 xl:w-64 bg-slate-100 dark:bg-slate-900 border-none rounded-full py-2 pl-10 pr-4 text-xs focus:ring-2 focus:ring-blue-500 transition-all"
+                className="w-48 xl:w-64 bg-slate-100 dark:bg-brand-primary/40 border border-transparent dark:border-brand-purple/20 rounded-full py-2 pl-10 pr-4 text-[10px] uppercase font-black tracking-widest focus:ring-1 focus:ring-brand-accent transition-all text-slate-900 dark:text-white"
               />
             </div>
 
             <button 
               onClick={() => setIsDark(!isDark)}
-              className="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-all"
+              className="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-brand-primary/60 transition-all border border-transparent dark:border-brand-purple/10"
             >
               {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
 
             {user ? (
               <div className="flex items-center space-x-3">
-                <Link to="/dashboard" className="w-10 h-10 rounded-full overflow-hidden border-2 border-white dark:border-slate-800 shadow-sm">
+                <Link to="/dashboard" className="w-10 h-10 rounded-full overflow-hidden border-2 border-white dark:border-brand-accent shadow-sm">
                   <img src={user.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.uid}`} alt="Profile" />
                 </Link>
               </div>
             ) : (
               <button
                 onClick={signInWithGoogle}
-                className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-bold transition-all active:scale-95 shadow-lg shadow-blue-600/20"
+                className="px-6 py-2 bg-brand-accent text-brand-primary rounded-full text-[10px] uppercase tracking-widest font-black transition-all active:scale-95 shadow-lg shadow-brand-accent/20 hover:brightness-110"
               >
                 Join Now
               </button>
@@ -119,7 +119,7 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="absolute top-16 left-0 right-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 lg:hidden overflow-hidden"
+            className="absolute top-16 left-0 right-0 bg-white dark:bg-brand-primary border-b border-slate-200 dark:border-brand-purple/20 lg:hidden overflow-hidden"
           >
             <div className="px-4 py-6 space-y-4">
               {navLinks.map((link) => (
@@ -127,7 +127,7 @@ export default function Navbar() {
                   key={link.name}
                   to={link.path}
                   onClick={() => setIsOpen(false)}
-                  className="block text-lg font-bold text-slate-700 dark:text-slate-200 hover:text-blue-600 transition-colors"
+                  className="block text-lg font-black uppercase tracking-widest text-slate-700 dark:text-slate-200 hover:text-brand-accent transition-colors"
                 >
                   {link.name}
                 </Link>
@@ -138,7 +138,7 @@ export default function Navbar() {
                     signInWithGoogle();
                     setIsOpen(false);
                   }}
-                  className="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold"
+                  className="w-full py-4 bg-brand-accent text-brand-primary rounded-2xl font-black uppercase tracking-widest"
                 >
                   Sign In
                 </button>

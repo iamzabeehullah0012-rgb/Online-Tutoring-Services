@@ -12,6 +12,7 @@ import Tutors from './pages/Tutors';
 import Booking from './pages/Booking';
 import Dashboard from './pages/Dashboard';
 import Blog from './pages/Blog';
+import Pricing from './pages/Pricing';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -34,6 +35,7 @@ function AppContent() {
           <Route path="/booking" element={<PrivateRoute><Booking /></PrivateRoute>} />
           <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/pricing" element={<Pricing />} />
         </Routes>
       </main>
       <Footer />

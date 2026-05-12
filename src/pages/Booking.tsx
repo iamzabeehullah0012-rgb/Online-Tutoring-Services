@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Calendar as CalendarIcon, Clock, User, ChevronRight, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, User, ChevronRight, CheckCircle2, AlertCircle, Mail, Phone, GraduationCap, BookOpen, MessageSquare, CreditCard, Wallet, Smartphone } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { format, addDays, startOfToday } from 'date-fns';
 import { db } from '../lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { cn } from '../lib/utils';
 
 export default function Booking() {
   const { user } = useAuth();
@@ -13,11 +14,30 @@ export default function Booking() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  // New form state
+  const [formData, setFormData] = useState({
+    email: user?.email || '',
+    whatsapp: '',
+    grade: '',
+    subject: '',
+    notes: '',
+    paymentMethod: 'stripe'
+  });
+
   const dates = Array.from({ length: 7 }, (_, i) => addDays(startOfToday(), i));
   const times = ['10:00 AM', '11:30 AM', '2:00 PM', '4:30 PM', '6:00 PM', '8:30 PM'];
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
   const handleBooking = async () => {
     if (!selectedDate || !selectedTime || !user) return;
+    if (!formData.email || !formData.whatsapp || !formData.grade || !formData.subject) {
+      alert('Please fill in all required contact and academic details.');
+      return;
+    }
     
     setIsSubmitting(true);
     try {
@@ -27,6 +47,15 @@ export default function Booking() {
         date: selectedDate.toISOString(),
         time: selectedTime,
         status: 'pending',
+        contactInfo: {
+          email: formData.email,
+          whatsapp: formData.whatsapp,
+        },
+        academicInfo: {
+          grade: formData.grade,
+          subject: formData.subject,
+        },
+        additionalDetails: formData.notes,
         createdAt: serverTimestamp(),
       });
       setIsSuccess(true);
@@ -39,32 +68,130 @@ export default function Booking() {
 
   if (isSuccess) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8">
-          <CheckCircle2 className="w-10 h-10" />
-        </motion.div>
-        <h1 className="text-4xl font-black text-slate-900 mb-4">Request Sent!</h1>
-        <p className="text-slate-600 mb-10">Your booking request has been sent to the tutor. You'll receive a confirmation email shortly.</p>
-        <button onClick={() => window.location.href = '/dashboard'} className="px-8 py-4 gradient-bg text-white rounded-2xl font-bold">Go to Dashboard</button>
+      <div className="bg-brand-slate-50 dark:bg-slate-950 min-h-screen flex items-center justify-center p-4">
+        <div className="max-w-xl w-full text-center bento-card p-12 lg:p-20">
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-24 h-24 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-[2rem] flex items-center justify-center mx-auto mb-10 shadow-xl">
+            <CheckCircle2 className="w-12 h-12" />
+          </motion.div>
+          <h1 className="text-4xl lg:text-5xl font-black text-slate-900 dark:text-white mb-6 tracking-tight">Request Sent!</h1>
+          <p className="text-slate-500 dark:text-slate-400 mb-12 font-medium leading-relaxed">
+            Your booking request has been sent to Dr. Sarah Ahmed. You'll receive a confirmation via WhatsApp and Email shortly.
+          </p>
+          <button 
+            onClick={() => window.location.href = '/dashboard'} 
+            className="w-full py-5 bg-brand-primary dark:bg-brand-accent text-white dark:text-brand-primary rounded-2xl font-black text-sm uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-xl shadow-brand-accent/20"
+          >
+            Go to Dashboard
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-slate-50 min-h-screen py-20">
+    <div className="bg-brand-slate-50 dark:bg-slate-950 min-h-screen py-20 pb-40 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Main Booking Content */}
-          <div className="lg:col-span-8 space-y-10">
+          <div className="lg:col-span-8 space-y-12">
             <header>
-              <h1 className="text-4xl font-black text-slate-900 mb-2">Book a Session</h1>
-              <p className="text-slate-600">Select your preferred date and time for the 1-on-1 session.</p>
+              <span className="inline-block bg-brand-accent/10 dark:bg-brand-accent/5 text-brand-primary dark:text-brand-accent text-[10px] uppercase tracking-[0.2em] font-black px-4 py-2 rounded-full mb-6 border border-brand-accent/20">
+                 Secure Your Spot
+              </span>
+              <h1 className="text-4xl lg:text-6xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Book a Session</h1>
+              <p className="text-xl text-slate-500 dark:text-slate-400 font-medium max-w-2xl">Select your preferred slot and provide your academic details for a custom lesson plan.</p>
             </header>
 
+            {/* Form Details */}
+            <div className="bento-card p-10 space-y-8">
+              <h3 className="text-xl font-black text-slate-900 dark:text-white flex items-center uppercase tracking-widest text-xs">
+                <User className="w-5 h-5 mr-3 text-brand-accent" />
+                Contact & Academic Details
+              </h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">Email Address</label>
+                  <div className="relative">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <input 
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      placeholder="you@email.com"
+                      className="w-full bg-slate-50 dark:bg-brand-primary/40 border-none rounded-2xl py-4 pl-12 pr-6 text-sm font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-accent transition-all"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">WhatsApp Number</label>
+                  <div className="relative">
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <input 
+                      type="tel"
+                      name="whatsapp"
+                      value={formData.whatsapp}
+                      onChange={handleInputChange}
+                      placeholder="+92 300 1234567"
+                      className="w-full bg-slate-50 dark:bg-brand-primary/40 border-none rounded-2xl py-4 pl-12 pr-6 text-sm font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-accent transition-all"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">Grade Level</label>
+                  <div className="relative">
+                    <GraduationCap className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <select 
+                      name="grade"
+                      value={formData.grade}
+                      onChange={handleInputChange}
+                      className="w-full bg-slate-50 dark:bg-brand-primary/40 border-none rounded-2xl py-4 pl-12 pr-6 text-sm font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-accent transition-all appearance-none"
+                    >
+                      <option value="">Select Grade</option>
+                      <option value="IGCSE">IGCSE</option>
+                      <option value="O Level">O Level</option>
+                      <option value="A Level">A Level</option>
+                      <option value="FSc">FSc</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">Subject</label>
+                  <div className="relative">
+                    <BookOpen className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <input 
+                      type="text"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      placeholder="e.g. Physics"
+                      className="w-full bg-slate-50 dark:bg-brand-primary/40 border-none rounded-2xl py-4 pl-12 pr-6 text-sm font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-accent transition-all"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">Additional Details / Topics to Cover</label>
+                <div className="relative">
+                  <MessageSquare className="absolute left-4 top-6 w-4 h-4 text-slate-400" />
+                  <textarea 
+                    name="notes"
+                    value={formData.notes}
+                    onChange={handleInputChange}
+                    placeholder="Tell us what you want to focus on during this session..."
+                    rows={4}
+                    className="w-full bg-slate-50 dark:bg-brand-primary/40 border-none rounded-2xl py-4 pl-12 pr-6 text-sm font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-accent transition-all resize-none"
+                  />
+                </div>
+              </div>
+            </div>
+
             {/* Date Selection */}
-            <div className="space-y-6">
-              <h3 className="text-xl font-bold text-slate-900 flex items-center">
-                <CalendarIcon className="w-5 h-5 mr-3 text-brand-electric" />
+            <div className="space-y-8">
+              <h3 className="text-xl font-black text-slate-900 dark:text-white flex items-center uppercase tracking-widest text-xs">
+                <CalendarIcon className="w-5 h-5 mr-3 text-brand-accent" />
                 Select Date
               </h3>
               <div className="flex space-x-4 overflow-x-auto pb-4 no-scrollbar">
@@ -75,13 +202,15 @@ export default function Booking() {
                       key={date.toISOString()}
                       onClick={() => setSelectedDate(date)}
                       className={cn(
-                        "flex flex-col items-center justify-center min-w-[100px] h-32 rounded-3xl border-2 transition-all shrink-0",
-                        isSelected ? "bg-brand-blue border-brand-blue text-white shadow-xl shadow-brand-blue/20" : "bg-white border-slate-100 text-slate-600 hover:border-brand-electric/30"
+                        "flex flex-col items-center justify-center min-w-[110px] h-36 rounded-3xl border-2 transition-all shrink-0",
+                        isSelected 
+                          ? "bg-brand-primary border-brand-accent text-white shadow-2xl shadow-brand-primary/20 scale-105" 
+                          : "bg-white dark:bg-brand-primary/40 border-slate-100 dark:border-brand-purple/10 text-slate-600 dark:text-slate-300 hover:border-brand-accent/30"
                       )}
                     >
-                      <span className="text-xs font-bold uppercase tracking-widest opacity-60 mb-2">{format(date, 'eee')}</span>
-                      <span className="text-2xl font-black">{format(date, 'd')}</span>
-                      <span className="text-xs font-bold mt-2">{format(date, 'MMM')}</span>
+                      <span className="text-[10px] font-black uppercase tracking-widest opacity-60 mb-2">{format(date, 'eee')}</span>
+                      <span className="text-3xl font-black">{format(date, 'd')}</span>
+                      <span className="text-[10px] font-black uppercase mt-2 tracking-widest">{format(date, 'MMM')}</span>
                     </button>
                   );
                 })}
@@ -89,12 +218,12 @@ export default function Booking() {
             </div>
 
             {/* Time Selection */}
-            <div className="space-y-6">
-              <h3 className="text-xl font-bold text-slate-900 flex items-center">
-                <Clock className="w-5 h-5 mr-3 text-brand-electric" />
+            <div className="space-y-8">
+              <h3 className="text-xl font-black text-slate-900 dark:text-white flex items-center uppercase tracking-widest text-xs">
+                <Clock className="w-5 h-5 mr-3 text-brand-accent" />
                 Select Time (PKT)
               </h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                 {times.map((time) => {
                   const isSelected = selectedTime === time;
                   return (
@@ -102,8 +231,10 @@ export default function Booking() {
                       key={time}
                       onClick={() => setSelectedTime(time)}
                       className={cn(
-                        "py-5 px-6 rounded-2xl text-sm font-black border-2 transition-all",
-                        isSelected ? "bg-brand-electric border-brand-electric text-white shadow-lg shadow-brand-electric/20" : "bg-white border-slate-100 text-slate-600 hover:border-brand-electric/30"
+                        "py-6 px-6 rounded-2xl text-xs font-black uppercase tracking-widest border-2 transition-all",
+                        isSelected 
+                          ? "bg-brand-accent border-brand-accent text-brand-primary shadow-xl shadow-brand-accent/20" 
+                          : "bg-white dark:bg-brand-primary/40 border-slate-100 dark:border-brand-purple/10 text-slate-600 dark:text-slate-300 hover:border-brand-accent/30"
                       )}
                     >
                       {time}
@@ -116,57 +247,102 @@ export default function Booking() {
 
           {/* Checkout/Summary Sidebar */}
           <div className="lg:col-span-4">
-            <div className="bg-white p-8 rounded-[3rem] border border-slate-100 shadow-xl lg:sticky lg:top-32">
-              <h3 className="text-2xl font-black text-slate-900 mb-8">Summary</h3>
+            <div className="bg-white dark:bg-brand-primary/50 backdrop-blur-xl p-8 rounded-[3rem] border border-slate-100 dark:border-brand-purple/20 shadow-2xl lg:sticky lg:top-32 transition-colors">
+              <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-8 tracking-tight">Booking Summary</h3>
               
               <div className="space-y-6 mb-8">
-                <div className="flex items-center space-x-4 p-4 bg-slate-50 rounded-2xl">
-                  <div className="w-12 h-12 rounded-xl border border-slate-200 overflow-hidden">
+                <div className="flex items-center space-x-4 p-5 bg-slate-50 dark:bg-brand-primary/40 rounded-3xl border border-slate-100 dark:border-brand-purple/10">
+                  <div className="w-14 h-14 rounded-2xl border-2 border-white dark:border-brand-accent overflow-hidden shadow-sm">
                     <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400" alt="Tutor" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Tutor</p>
-                    <p className="font-bold text-slate-900">Dr. Sarah Ahmed</p>
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Elite Faculty</p>
+                    <p className="text-lg font-black text-slate-900 dark:text-white tracking-tight">Dr. Sarah Ahmed</p>
                   </div>
                 </div>
 
                 <div className="space-y-4 px-2">
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-slate-500 font-medium">Session Type</span>
-                    <span className="text-slate-900 font-bold">1-on-1 Online</span>
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-slate-500 font-bold uppercase tracking-widest">Type</span>
+                    <span className="text-slate-900 dark:text-white font-black">1-on-1 Online</span>
                   </div>
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-slate-500 font-medium">Duration</span>
-                    <span className="text-slate-900 font-bold">60 Minutes</span>
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-slate-500 font-bold uppercase tracking-widest">Duration</span>
+                    <span className="text-slate-900 dark:text-white font-black">60 Minutes</span>
                   </div>
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-slate-500 font-medium">Price</span>
-                    <span className="text-slate-900 font-bold">$25.00</span>
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-slate-500 font-bold uppercase tracking-widest">Price</span>
+                    <span className="text-slate-900 dark:text-white font-black">$25.00</span>
                   </div>
+                  {selectedDate && (
+                    <div className="flex justify-between items-center text-xs">
+                      <span className="text-slate-500 font-bold uppercase tracking-widest">Date</span>
+                      <span className="text-brand-accent font-black">{format(selectedDate, 'MMM d, yyyy')}</span>
+                    </div>
+                  )}
+                  {selectedTime && (
+                    <div className="flex justify-between items-center text-xs">
+                      <span className="text-slate-500 font-bold uppercase tracking-widest">Time</span>
+                      <span className="text-brand-accent font-black">{selectedTime}</span>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              <div className="bg-slate-900 rounded-3xl p-6 mb-8 text-white">
-                <div className="flex justify-between items-baseline">
-                  <span className="text-slate-400 text-xs font-bold uppercase">Total Due</span>
-                  <span className="text-3xl font-black">$25.00</span>
+              <div className="bg-brand-primary rounded-[2rem] p-8 mb-8 text-white border border-brand-purple/30 shadow-xl">
+                <div className="flex justify-between items-baseline mb-6">
+                  <span className="text-slate-400 text-[10px] font-black uppercase tracking-widest">Total Investment</span>
+                  <span className="text-4xl font-black tracking-tighter">$25.00</span>
+                </div>
+                
+                <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-4">Payment Method</p>
+                <div className="grid grid-cols-1 gap-3">
+                  {[
+                    { id: 'stripe', name: 'Credit/Debit Card (Stripe)', icon: CreditCard },
+                    { id: 'googlepay', name: 'Google Pay', icon: Smartphone },
+                    { id: 'sadapay', name: 'SadaPay Transfer', icon: Wallet }
+                  ].map((method) => (
+                    <button
+                      key={method.id}
+                      onClick={() => setFormData(prev => ({ ...prev, paymentMethod: method.id }))}
+                      className={cn(
+                        "w-full p-4 rounded-xl border flex items-center justify-between transition-all group",
+                        formData.paymentMethod === method.id 
+                          ? "bg-brand-accent/20 border-brand-accent text-brand-accent" 
+                          : "bg-white/5 border-white/10 text-white hover:bg-white/10"
+                      )}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <method.icon className={cn("w-4 h-4", formData.paymentMethod === method.id ? "text-brand-accent" : "text-slate-400")} />
+                        <span className="text-[10px] font-black uppercase tracking-widest">{method.name}</span>
+                      </div>
+                      <div className={cn(
+                        "w-4 h-4 rounded-full border-2 flex items-center justify-center",
+                        formData.paymentMethod === method.id ? "border-brand-accent bg-brand-accent" : "border-white/20"
+                      )}>
+                        {formData.paymentMethod === method.id && <div className="w-1.5 h-1.5 bg-brand-primary rounded-full" />}
+                      </div>
+                    </button>
+                  ))}
                 </div>
               </div>
 
               <button 
-                disabled={!selectedDate || !selectedTime || isSubmitting}
+                disabled={!selectedDate || !selectedTime || isSubmitting || !formData.whatsapp || !formData.grade || !formData.subject}
                 onClick={handleBooking}
                 className={cn(
-                  "w-full py-5 rounded-2xl font-black text-white transition-all transform active:scale-95 shadow-xl",
-                  (!selectedDate || !selectedTime) ? "bg-slate-200 cursor-not-allowed" : "gradient-bg shadow-brand-electric/25 hover:shadow-brand-electric/40"
+                  "w-full py-6 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all transform active:scale-95 shadow-xl",
+                  (!selectedDate || !selectedTime || !formData.whatsapp || !formData.grade || !formData.subject) 
+                    ? "bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-600 cursor-not-allowed" 
+                    : "bg-brand-accent text-brand-primary hover:brightness-110 shadow-brand-accent/20"
                 )}
               >
-                {isSubmitting ? 'Processing...' : 'Confirm & Pay'}
+                {isSubmitting ? 'Processing...' : 'Confirm & Book Session'}
               </button>
 
-              <div className="mt-6 flex items-center justify-center space-x-2 text-slate-400">
+              <div className="mt-8 flex items-center justify-center space-x-3 text-slate-400">
                 <AlertCircle className="w-4 h-4" />
-                <span className="text-[10px] font-bold uppercase tracking-widest">Secured Payment</span>
+                <span className="text-[10px] font-black uppercase tracking-widest">Secured Payment Gateway</span>
               </div>
             </div>
           </div>
@@ -176,4 +352,3 @@ export default function Booking() {
   );
 }
 
-import { cn } from '../lib/utils';

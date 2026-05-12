@@ -8,11 +8,11 @@ import Home from './pages/Home';
 import Subjects from './pages/Subjects';
 import Courses from './pages/Courses';
 import Notes from './pages/Notes';
-import Tutors from './pages/Tutors';
 import Booking from './pages/Booking';
 import Dashboard from './pages/Dashboard';
 import Blog from './pages/Blog';
 import Pricing from './pages/Pricing';
+import SuccessStories from './pages/SuccessStories';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -31,11 +31,11 @@ function AppContent() {
           <Route path="/subjects/:id" element={<Subjects />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/notes" element={<Notes />} />
-          <Route path="/tutors" element={<Tutors />} />
           <Route path="/booking" element={<PrivateRoute><Booking /></PrivateRoute>} />
           <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/success-stories" element={<SuccessStories />} />
         </Routes>
       </main>
       <Footer />

@@ -29,9 +29,9 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Subjects', path: '/subjects' },
     { name: 'Notes', path: '/notes' },
+    { name: 'Results', path: '/success-stories' },
     { name: 'Blog', path: '/blog' },
     { name: 'Pricing', path: '/pricing' },
-    { name: 'Tutors', path: '/tutors' },
   ];
 
   return (

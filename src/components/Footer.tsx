@@ -6,7 +6,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-slate-50 dark:bg-brand-primary pt-20 pb-10 border-t border-slate-200 dark:border-brand-purple/20 transition-colors">
+    <footer className="bg-brand-slate-50 pt-20 pb-10 border-t border-white/5 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
@@ -15,16 +15,16 @@ export default function Footer() {
               <div className="w-10 h-10 bg-linear-to-br from-brand-primary to-brand-accent rounded-xl flex items-center justify-center shadow-lg group-hover:rotate-6 transition-transform">
                 <BookOpen className="text-white dark:text-brand-primary w-6 h-6" />
               </div>
-              <span className="text-2xl font-black bg-clip-text text-transparent bg-linear-to-r from-brand-primary to-brand-purple dark:from-brand-accent dark:to-white uppercase tracking-tighter">
+              <span className="text-2xl font-black bg-clip-text text-transparent bg-linear-to-r from-brand-accent to-white uppercase tracking-tighter">
                 AceExams
               </span>
             </Link>
-            <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+            <p className="text-slate-400 leading-relaxed font-medium">
               Empowering students to achieve academic excellence through expert-led tutoring and comprehensive study resources.
             </p>
             <div className="flex space-x-4">
               {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
-                <a key={i} href="#" className="w-10 h-10 rounded-full border border-slate-200 dark:border-brand-purple/20 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-brand-accent hover:text-brand-primary hover:border-brand-accent transition-all">
+                <a key={i} href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-accent hover:text-brand-primary hover:border-brand-accent transition-all button-glow">
                   <Icon className="w-5 h-5" />
                 </a>
               ))}
@@ -33,11 +33,11 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-sm font-black text-slate-900 dark:text-white mb-8 uppercase tracking-widest">Learning</h4>
+            <h4 className="text-sm font-black text-white mb-8 uppercase tracking-widest">Learning</h4>
             <ul className="space-y-4">
               {['Subjects', 'Courses', 'Pricing', 'Revision Notes', 'Blog', 'Past Papers'].map((link) => (
                 <li key={link}>
-                  <Link to={`/${link.toLowerCase().replace(' ', '')}`} className="text-slate-500 dark:text-slate-400 hover:text-brand-accent transition-colors font-medium">
+                  <Link to={`/${link.toLowerCase().replace(' ', '')}`} className="text-slate-400 hover:text-brand-accent transition-colors font-medium">
                     {link}
                   </Link>
                 </li>
@@ -47,7 +47,7 @@ export default function Footer() {
 
           {/* Company */}
           <div>
-            <h4 className="text-sm font-black text-slate-900 dark:text-white mb-8 uppercase tracking-widest">Company</h4>
+            <h4 className="text-sm font-black text-white mb-8 uppercase tracking-widest">Company</h4>
             <ul className="space-y-4">
               {[
                 { name: 'Blog', path: '/blog' },
@@ -56,7 +56,7 @@ export default function Footer() {
                 { name: 'Contact Us', path: '#' }
               ].map((link) => (
                 <li key={link.name}>
-                  <Link to={link.path} className="text-slate-500 dark:text-slate-400 hover:text-brand-accent transition-colors font-medium">
+                  <Link to={link.path} className="text-slate-400 hover:text-brand-accent transition-colors font-medium">
                     {link.name}
                   </Link>
                 </li>
@@ -66,17 +66,17 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="text-sm font-black text-slate-900 dark:text-white mb-8 uppercase tracking-widest">Get in Touch</h4>
+            <h4 className="text-sm font-black text-white mb-8 uppercase tracking-widest">Get in Touch</h4>
             <ul className="space-y-4">
-              <li className="flex items-start space-x-3 text-slate-600 dark:text-slate-400 font-medium">
+              <li className="flex items-start space-x-3 text-slate-400 font-medium">
                 <MapPin className="w-5 h-5 text-brand-accent shrink-0" />
-                <span>123 Educator's Row, Knowledge City, Pakistan</span>
+                <span>123 Educator's Row, Knowledge City, Global</span>
               </li>
-              <li className="flex items-center space-x-3 text-slate-600 dark:text-slate-400 font-medium">
+              <li className="flex items-center space-x-3 text-slate-400 font-medium">
                 <Phone className="w-5 h-5 text-brand-accent shrink-0" />
                 <span>+92 300 1234567</span>
               </li>
-              <li className="flex items-center space-x-3 text-slate-600 dark:text-slate-400 font-medium">
+              <li className="flex items-center space-x-3 text-slate-400 font-medium">
                 <Mail className="w-5 h-5 text-brand-accent shrink-0" />
                 <span>hello@aceexams.com</span>
               </li>
@@ -84,7 +84,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-20 pt-8 border-t border-slate-200 dark:border-brand-purple/20 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        <div className="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <p className="text-slate-500 text-sm font-medium">
             © {currentYear} AceExams Tutoring. All rights reserved.
           </p>

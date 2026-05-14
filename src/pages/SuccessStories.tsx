@@ -52,7 +52,7 @@ const STORIES = [
 
 export default function SuccessStories() {
   return (
-    <div className="bg-brand-slate-50 dark:bg-slate-950 min-h-screen py-20 pb-40 transition-colors relative overflow-hidden">
+    <div className="bg-brand-slate-50 min-h-screen py-20 pb-40 transition-colors relative overflow-hidden">
       {/* Background blobs */}
       <motion.div 
         animate={{ 
@@ -61,7 +61,7 @@ export default function SuccessStories() {
           rotate: [0, 90, 0]
         }}
         transition={{ duration: 15, repeat: Infinity }}
-        className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-brand-accent rounded-full blur-[120px] pointer-events-none"
+        className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-brand-purple rounded-full blur-[120px] pointer-events-none"
       />
       <motion.div 
         animate={{ 
@@ -70,19 +70,19 @@ export default function SuccessStories() {
           rotate: [0, -90, 0]
         }}
         transition={{ duration: 20, repeat: Infinity, delay: 2 }}
-        className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-brand-primary rounded-full blur-[120px] pointer-events-none"
+        className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-brand-danger rounded-full blur-[120px] pointer-events-none"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <header className="mb-24 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-            <span className="inline-block bg-brand-accent/10 dark:bg-brand-accent/5 text-brand-primary dark:text-brand-accent text-[10px] uppercase tracking-[0.2em] font-black px-4 py-2 rounded-full border border-brand-accent/20">
+            <span className="inline-block bg-brand-danger/10 text-brand-danger text-[10px] uppercase tracking-[0.2em] font-black px-4 py-2 rounded-full border border-brand-danger/20 italic">
                Wall of Excellence
             </span>
-            <h1 className="text-4xl lg:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight">
-              Global <span className="text-brand-primary dark:text-brand-accent">Success</span> Stories
+            <h1 className="text-4xl lg:text-7xl font-black text-white mb-6 tracking-tight">
+              Global <span className="text-brand-purple">Success</span> Stories
             </h1>
-            <p className="text-xl text-slate-500 dark:text-slate-400 max-w-2xl mx-auto font-medium leading-relaxed">
+            <p className="text-xl text-slate-400 max-w-2xl mx-auto font-medium leading-relaxed">
               Meet the students from around the world who used our resources, notes, and recorded sessions to achieve academic mastery.
             </p>
           </motion.div>
@@ -91,10 +91,10 @@ export default function SuccessStories() {
         {/* Highlight Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-24">
           {[
-            { label: 'A* Grades', value: '450+', icon: Trophy },
-            { label: 'Countries', value: '12+', icon: MapPin },
-            { label: 'Success Rate', value: '98%', icon: CheckCircle2 },
-            { label: 'Top Universities', value: '85+', icon: Award },
+            { label: 'A* Grades', value: '450+', icon: Trophy, color: 'text-brand-accent', bg: 'bg-brand-accent/10', border: 'border-brand-accent/20' },
+            { label: 'Countries', value: '12+', icon: MapPin, color: 'text-brand-purple', bg: 'bg-brand-purple/10', border: 'border-brand-purple/20' },
+            { label: 'Success Rate', value: '98%', icon: CheckCircle2, color: 'text-brand-danger', bg: 'bg-brand-danger/10', border: 'border-brand-danger/20' },
+            { label: 'Top Universities', value: '85+', icon: Award, color: 'text-white', bg: 'bg-white/10', border: 'border-white/20' },
           ].map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -102,14 +102,14 @@ export default function SuccessStories() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="bento-card p-8 text-center flex flex-col items-center justify-center space-y-4"
+              className="bento-card p-8 text-center flex flex-col items-center justify-center space-y-4 hover-float"
             >
-              <div className="w-12 h-12 rounded-2xl bg-brand-accent/10 flex items-center justify-center border border-brand-accent/20 text-brand-primary dark:text-brand-accent">
+              <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center border", stat.bg, stat.border, stat.color)}>
                 <stat.icon className="w-6 h-6" />
               </div>
               <div>
-                <div className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">{stat.value}</div>
-                <div className="text-[10px] font-black uppercase tracking-widest text-slate-400">{stat.label}</div>
+                <div className="text-3xl font-black text-white tracking-tighter">{stat.value}</div>
+                <div className="text-[10px] font-black uppercase tracking-widest text-slate-500">{stat.label}</div>
               </div>
             </motion.div>
           ))}
@@ -123,24 +123,23 @@ export default function SuccessStories() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              whileHover={{ y: -5 }}
-              className="bento-card p-10 lg:p-12 group hover:shadow-2xl hover:shadow-brand-accent/10 transition-all duration-500 flex flex-col lg:flex-row gap-10 items-center lg:items-start relative overflow-hidden"
+              className="bento-card p-10 lg:p-12 group transition-all duration-500 flex flex-col lg:flex-row gap-10 items-center lg:items-start relative overflow-hidden hover-float"
             >
               <div className="w-40 h-40 shrink-0 relative">
                 <motion.div 
                   animate={{ rotate: [6, 12, 6] }}
                   transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute inset-0 bg-brand-accent rounded-[2.5rem] opacity-20"
+                  className="absolute inset-0 bg-brand-purple rounded-[2.5rem] opacity-20"
                 ></motion.div>
                 <img 
                   src={story.image} 
                   alt={story.name} 
-                  className="w-full h-full object-cover rounded-[2.5rem] relative z-10 border-4 border-white dark:border-brand-primary shadow-xl group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover rounded-[2.5rem] relative z-10 border-4 border-brand-primary shadow-xl group-hover:scale-105 transition-transform duration-500"
                 />
                 <motion.div 
                    animate={{ y: [0, -5, 0] }}
                    transition={{ duration: 3, repeat: Infinity }}
-                   className="absolute -bottom-4 -right-4 w-12 h-12 bg-white dark:bg-brand-primary rounded-full flex items-center justify-center z-20 shadow-lg border-2 border-brand-accent text-brand-accent"
+                   className="absolute -bottom-4 -right-4 w-12 h-12 bg-brand-primary rounded-full flex items-center justify-center z-20 shadow-lg border-2 border-brand-purple text-brand-purple"
                 >
                    <Quote className="w-6 h-6 fill-current" />
                 </motion.div>
@@ -149,30 +148,30 @@ export default function SuccessStories() {
               <div className="space-y-6 flex-grow relative z-10">
                 <div>
                   <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="px-3 py-1 bg-brand-accent/10 text-brand-primary dark:text-brand-accent rounded-lg text-[10px] font-black uppercase tracking-[0.2em] border border-brand-accent/20">
+                    <span className="px-3 py-1 bg-brand-purple/10 text-brand-purple rounded-lg text-[10px] font-black uppercase tracking-[0.2em] border border-brand-purple/20">
                       {story.curriculum}
                     </span>
-                    <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-lg text-[10px] font-black uppercase tracking-[0.2em]">
+                    <span className="px-3 py-1 bg-brand-danger/20 text-brand-danger rounded-lg text-[10px] font-black uppercase tracking-[0.2em]">
                       {story.grades}
                     </span>
                   </div>
-                  <h3 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">{story.name}</h3>
+                  <h3 className="text-3xl font-black text-white tracking-tight">{story.name}</h3>
                   <div className="flex items-center text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">
-                    <MapPin className="w-3.5 h-3.5 mr-1.5 text-brand-accent" />
+                    <MapPin className="w-3.5 h-3.5 mr-1.5 text-brand-danger" />
                     {story.location}
                   </div>
                 </div>
 
-                <p className="text-slate-500 dark:text-slate-400 leading-relaxed font-medium italic">
+                <p className="text-slate-400 leading-relaxed font-medium italic">
                   "{story.testimonial}"
                 </p>
 
-                <div className="pt-6 border-t border-slate-100 dark:border-brand-purple/20 space-y-4">
+                <div className="pt-6 border-t border-white/10 space-y-4">
                    <div className="flex items-center text-[10px] font-black uppercase tracking-widest text-slate-400">
-                     <Award className="w-4 h-4 mr-2 text-brand-accent" />
+                     <Award className="w-4 h-4 mr-2 text-brand-danger" />
                      Acceptance: {story.university}
                    </div>
-                   <p className="text-[10px] font-black uppercase tracking-widest text-brand-primary dark:text-brand-accent bg-brand-accent/5 px-4 py-2 rounded-xl inline-block border border-brand-accent/10">
+                   <p className="text-[10px] font-black uppercase tracking-widest text-brand-purple bg-brand-purple/5 px-4 py-2 rounded-xl inline-block border border-brand-purple/10">
                      Focus: {story.subjects}
                    </p>
                 </div>
@@ -182,16 +181,16 @@ export default function SuccessStories() {
         </div>
 
         {/* CTA */}
-        <div className="mt-32 p-12 lg:p-24 rounded-[4rem] bg-brand-primary text-center text-white border border-brand-purple/30 relative overflow-hidden shadow-2xl">
+        <div className="mt-32 p-12 lg:p-24 rounded-[4rem] bg-brand-primary text-center text-white border border-brand-danger/10 relative overflow-hidden shadow-2xl section-float">
            <div className="relative z-10 max-w-4xl mx-auto">
-              <h2 className="text-4xl lg:text-6xl font-black mb-8 leading-tight tracking-tight">Become our next <span className="text-brand-accent">A* Story</span></h2>
-              <p className="text-lg text-slate-300 mb-12 font-medium">Join thousands of students who have transformed their grades using our verified revision notes and recorded masterclasses.</p>
-              <button className="px-12 py-5 bg-brand-accent text-brand-primary rounded-2xl font-black text-sm uppercase tracking-widest hover:brightness-110 transition-all shadow-xl shadow-brand-accent/20">
+              <h2 className="text-4xl lg:text-6xl font-black mb-8 leading-tight tracking-tight uppercase">Become our next <span className="text-brand-danger">A* Story</span></h2>
+              <p className="text-lg text-slate-400 mb-12 font-medium">Join thousands of students who have transformed their grades using our verified revision notes and recorded masterclasses.</p>
+              <button className="px-12 py-5 bg-brand-danger text-white rounded-2xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-brand-danger/30 button-glow-danger">
                  Explore Revision Resources
               </button>
            </div>
-           <div className="absolute top-0 left-0 w-64 h-64 bg-brand-accent/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-           <div className="absolute bottom-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
+           <div className="absolute top-0 left-0 w-64 h-64 bg-brand-purple/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+           <div className="absolute bottom-0 right-0 w-64 h-64 bg-brand-danger/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
         </div>
       </div>
     </div>

@@ -22,9 +22,14 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
 
 function AppContent() {
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-grow pt-16">
+    <div className="flex flex-col min-h-screen relative overflow-hidden bg-brand-slate-50">
+      {/* Premium Glassmorphism Ambient Mesh Glows */}
+      <div className="absolute top-[-10%] left-[-20%] w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] bg-brand-accent/8 rounded-full blur-[160px] pointer-events-none animate-pulse duration-[8000ms]" />
+      <div className="absolute top-[35%] right-[-20%] w-[50vw] h-[50vw] max-w-[700px] max-h-[700px] bg-brand-purple/10 rounded-full blur-[150px] pointer-events-none animate-pulse duration-[12000ms]" />
+      <div className="absolute bottom-[10%] left-[10%] w-[55vw] h-[55vw] max-w-[750px] max-h-[750px] bg-brand-danger/6 rounded-full blur-[170px] pointer-events-none animate-pulse duration-[10000ms]" />
+
+      <Navbar className="relative z-50" />
+      <main className="flex-grow pt-16 relative z-10">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/subjects" element={<Subjects />} />

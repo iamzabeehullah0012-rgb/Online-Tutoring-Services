@@ -24,11 +24,11 @@ export default function Subjects() {
             Choose a subject to start exploration. High-quality study materials and expert tutors available for each.
           </p>
           <div className="mt-10 relative max-w-2xl">
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 w-6 h-6" />
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
             <input 
               type="text" 
               placeholder="Search for a subject (e.g. Physics)..." 
-              className="w-full bg-brand-primary/40 border border-white/5 rounded-[2rem] py-5 pl-14 pr-8 outline-none focus:ring-4 focus:ring-brand-accent/10 focus:border-brand-accent transition-all shadow-2xl text-lg text-white placeholder:text-slate-600"
+              className="w-full glass-input rounded-full py-5 pl-14 pr-8 text-lg focus:border-brand-accent/40 focus:ring-brand-accent/10 transition-all text-white placeholder:text-slate-500 shadow-2xl"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />

@@ -106,7 +106,7 @@ export default function Blog() {
             <input 
               type="email" 
               placeholder="future_scholar@email.com" 
-              className="px-8 py-5 rounded-[2rem] bg-brand-primary/40 border border-white/5 outline-none focus:ring-4 focus:ring-brand-purple/20 focus:border-brand-purple min-w-[300px] text-lg font-black text-white placeholder:text-slate-600"
+              className="glass-input rounded-full px-8 py-5 min-w-[300px] text-lg font-black placeholder:text-slate-500"
             />
             <button className="px-10 py-5 bg-brand-danger text-white rounded-[2rem] font-black text-[10px] uppercase tracking-widest shadow-xl shadow-brand-danger/20 active:scale-95 transition-all button-glow-danger">
               Join Community

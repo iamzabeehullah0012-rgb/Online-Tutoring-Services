@@ -111,78 +111,78 @@ export default function Booking() {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-2">Email Address</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">Email Address</label>
                   <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input 
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
                       placeholder="you@email.com"
-                      className="w-full bg-brand-primary/40 border border-white/5 rounded-2xl py-4 pl-12 pr-6 text-sm font-bold text-white placeholder:text-slate-600 focus:ring-2 focus:ring-brand-purple transition-all"
+                      className="w-full glass-input pl-12"
                     />
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-2">WhatsApp Number</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">WhatsApp Number</label>
                   <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input 
                       type="tel"
                       name="whatsapp"
                       value={formData.whatsapp}
                       onChange={handleInputChange}
                       placeholder="+92 300 1234567"
-                      className="w-full bg-brand-primary/40 border border-white/5 rounded-2xl py-4 pl-12 pr-6 text-sm font-bold text-white placeholder:text-slate-600 focus:ring-2 focus:ring-brand-purple transition-all"
+                      className="w-full glass-input pl-12"
                     />
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-2">Grade Level</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">Grade Level</label>
                   <div className="relative">
-                    <GraduationCap className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                    <GraduationCap className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <select 
                       name="grade"
                       value={formData.grade}
                       onChange={handleInputChange}
-                      className="w-full bg-brand-primary/40 border border-white/5 rounded-2xl py-4 pl-12 pr-6 text-sm font-bold text-white focus:ring-2 focus:ring-brand-purple transition-all appearance-none"
+                      className="w-full glass-input pl-12 appearance-none"
                     >
-                      <option value="" className="bg-brand-primary">Select Grade</option>
-                      <option value="IGCSE" className="bg-brand-primary">IGCSE</option>
-                      <option value="O Level" className="bg-brand-primary">O Level</option>
-                      <option value="A Level" className="bg-brand-primary">A Level</option>
-                      <option value="FSc" className="bg-brand-primary">FSc</option>
+                      <option value="" className="bg-[#030a16]">Select Grade</option>
+                      <option value="IGCSE" className="bg-[#030a16]">IGCSE</option>
+                      <option value="O Level" className="bg-[#030a16]">O Level</option>
+                      <option value="A Level" className="bg-[#030a16]">A Level</option>
+                      <option value="FSc" className="bg-[#030a16]">FSc</option>
                     </select>
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-2">Subject</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">Subject</label>
                   <div className="relative">
-                    <BookOpen className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                    <BookOpen className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input 
                       type="text"
                       name="subject"
                       value={formData.subject}
                       onChange={handleInputChange}
                       placeholder="e.g. Physics"
-                      className="w-full bg-brand-primary/40 border border-white/5 rounded-2xl py-4 pl-12 pr-6 text-sm font-bold text-white placeholder:text-slate-600 focus:ring-2 focus:ring-brand-purple transition-all"
+                      className="w-full glass-input pl-12"
                     />
                   </div>
                 </div>
               </div>
 
               <div className="space-y-3">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-2">Additional Details / Topics to Cover</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">Additional Details / Topics to Cover</label>
                 <div className="relative">
-                  <MessageSquare className="absolute left-4 top-6 w-4 h-4 text-slate-500" />
+                  <MessageSquare className="absolute left-4 top-6 w-4 h-4 text-slate-400" />
                   <textarea 
                     name="notes"
                     value={formData.notes}
                     onChange={handleInputChange}
                     placeholder="Tell us what you want to focus on during this session..."
                     rows={4}
-                    className="w-full bg-brand-primary/40 border border-white/5 rounded-2xl py-4 pl-12 pr-6 text-sm font-bold text-white placeholder:text-slate-600 focus:ring-2 focus:ring-brand-purple transition-all resize-none"
+                    className="w-full glass-input pl-12 resize-none"
                   />
                 </div>
               </div>
